@@ -9,7 +9,7 @@ export default class Navigation extends Component {
     render() {
         return (
             <Navbar expand='md' id="navbar" color="dark" >
-                <NavbarBrand >
+                <NavbarBrand href="/home">
                     <Label style={{ color: '#fff' }}>Sales Transaction Application</Label>
                 </NavbarBrand>
 

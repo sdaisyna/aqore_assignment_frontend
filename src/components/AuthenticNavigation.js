@@ -11,13 +11,13 @@ export default class AuthenticNavigation extends Component {
         e.preventDefault();
         localStorage.removeItem('token');
         this.props.history.push('/')
-        this.props.history.push('/');
+        
     }
     render() {
         return (
             <div>
             <Navbar expand='md' id="navbar" color="dark" >
-                <NavbarBrand >
+                <NavbarBrand href="/home">
                     <Label style={{ color: '#fff' }}>Sales Transaction Application</Label>
                 </NavbarBrand>
 
