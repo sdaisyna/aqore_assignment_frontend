@@ -8,12 +8,20 @@ import Login from './components/Login';
 import Welcome from './components/Welcome';
 import Signup from './components/Signup';
 import Home from './components/Home';
+
 import Product from './components/Product';
 import AddProduct from './components/AddProduct';
 import EditProduct from './components/EditProduct';
+
 import Customer from './components/Customer';
 import AddCustomer from './components/AddCustomer';
 import EditCustomer from './components/EditCustomer';
+
+
+import Transaction from './components/Transaction';
+import AddTransaction from './components/AddTransaction';
+import EditTransaction from './components/EditTransaction';
+
 
 import PrivateRoute from './components/PrivateRoute';
 
@@ -33,6 +41,10 @@ function App() {
         <PrivateRoute exact path='/customer' component={Customer} />
         <PrivateRoute exact path='/addcustomer' component={AddCustomer} />
         <PrivateRoute exact path='/updateCustomer/:id' component={EditCustomer} />
+
+        <PrivateRoute exact path='/transaction' component={Transaction} />
+        <PrivateRoute exact path='/addtransaction' component={AddTransaction} />
+        <PrivateRoute exact path='/updatetransaction/:id' component={EditTransaction} />
 
         <Route>
           <NoMatch />

@@ -13,8 +13,7 @@ export default class Customer extends Component {
 
         this.state = {
             customer_id: '',
-            fname: '',
-            lname: '',
+            fullname: '',
             address: '',
             phone: '',
             email: '',
@@ -71,13 +70,8 @@ export default class Customer extends Component {
 
                                 <CardBody className="text-justify">
                                     <CardTitle className="cardtitle">
-                                        <Label className="font-weight-bold">First name  </Label>
-                                        : {allCustomer.fname}
-                                    </CardTitle>
-
-                                    <CardTitle className="cardtitle">
-                                        <Label className="font-weight-bold">Last name  </Label>
-                                        : {allCustomer.lname}
+                                        <Label className="font-weight-bold">Full name </Label>
+                                        : {allCustomer.fullname}
                                     </CardTitle>
 
                                     <CardTitle className="cardtitle">

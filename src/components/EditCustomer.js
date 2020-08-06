@@ -62,13 +62,8 @@ export default class EditCustomer extends Component {
                         <Col sm="12" md={{ size: 6, offset: 3 }}>
                             <Form>
                                 <FormGroup>
-                                    <Label for="fname">First name</Label>
-                                    <Input type="text" name="fname" id="fname" value={this.state.customer.fname} onChange={(e) => this.handleChange(e)} />
-                                </FormGroup>
-
-                                <FormGroup>
-                                    <Label for="lname">Last name</Label>
-                                    <Input type="text" name="lname" id="lname" value={this.state.customer.lname} onChange={(e) => this.handleChange(e)} />
+                                    <Label for="fullname">Full name</Label>
+                                    <Input type="text" name="fullname" id="fullname" value={this.state.customer.fullname} onChange={(e) => this.handleChange(e)} />
                                 </FormGroup>
 
                                 <FormGroup>

@@ -10,8 +10,7 @@ export default class AddCustomer extends Component {
         super(props)
 
         this.state = {
-            fname: '',
-            lname: '',
+            fullname: '',
             address: '',
             phone: '',
             email: '',
@@ -27,8 +26,7 @@ export default class AddCustomer extends Component {
         console.log(this.state);
 
         axios.post('http://localhost:3002/customer', {
-            fname: this.state.fname,
-            lname: this.state.lname,
+            fullname: this.state.fullname,
             address: this.state.address,
             phone: this.state.phone,
             email: this.state.email
@@ -37,8 +35,7 @@ export default class AddCustomer extends Component {
             .then((response) => {
                 console.log(response.data);
                 this.setState({
-                    fname: '',
-                    lname: '',
+                    fullname: '',
                     address: '',
                     phone: '',
                     email: ''
@@ -79,13 +76,8 @@ export default class AddCustomer extends Component {
                         <Col sm="12" md={{ size: 6, offset: 3 }}>
                             <Form>
                                 <FormGroup>
-                                    <Label for="fname">First name</Label>
-                                    <Input type="text" name="fname" id="fname" value={this.state.fname} onChange={this.handleChange} />
-                                </FormGroup>
-
-                                <FormGroup>
-                                    <Label for="lname">Last name</Label>
-                                    <Input type="text" name="lname" id="lname" value={this.state.lname} onChange={this.handleChange} />
+                                    <Label for="fullname">Full name</Label>
+                                    <Input type="text" name="fullname" id="fullname" value={this.state.fullname} onChange={this.handleChange} />
                                 </FormGroup>
 
                                 <FormGroup>
