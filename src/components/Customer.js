@@ -7,9 +7,6 @@ import AuthenticNavigation from './AuthenticNavigation'
 
 
 
-
-
-
 export default class Customer extends Component {
     constructor(props) {
         super(props)

@@ -6,19 +6,35 @@ import { Link } from 'react-router-dom'
 import FileUploadButton from './FileUploadButton'
 import AuthenticNavigation from './AuthenticNavigation'
 
-
-export default class AddProduct extends Component {
+export default class EditProduct extends Component {
     constructor(props) {
         super(props)
-
+    
         this.state = {
-            product_name: '',
-            product_details: '',
-            price: '',
-            image: '',
-            product: {},
-            selectedFile: null,
+             product:{},
+             selectedFile:null
         }
+    }
+
+    handleChange = (e) => {
+        this.setState({
+            product: { ...this.state.product, [e.target.name]: e.target.value },
+
+        })
+    }
+
+
+    componentDidMount() {
+        axios.get('http://localhost:3002/product/' + (this.props.match.params.id), this.state.config)
+            .then((response) => {
+
+                this.setState({
+                    product: response.data,
+
+                })
+
+                console.log(this.state.checksize)
+            }).catch((err) => console.log(err.response));
     }
 
     handleFileSelect = (e) => {
@@ -26,59 +42,44 @@ export default class AddProduct extends Component {
             selectedFile: e.target.files[0]
         })
     }
-
-    addproduct = (e) => {
-        e.preventDefault();
-        console.log(this.state);
-
-        axios.post('http://localhost:3002/product', {
-
-            product_name: this.state.product_name,
-            product_details: this.state.product_details,
-            price: this.state.price,
-            image: this.state.image,
-        }, this.state.config)
-            .then((response) => {
-                console.log(response.data);
-                this.setState({
-                    product_name: '',
-                    product_details: '',
-                    price: '',
-                    image: '',
-
-                });
-            }).catch((err) => console.log(err))
-
-        this.props.history.push('/product');
-    }
-
-    handleChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
-    }
-
-
+ 
 
     uploadFile = (e) => {
         e.preventDefault();
         const data = new FormData()
         data.append('imageFile', this.state.selectedFile)
-        axios.post('http://localhost:3002/upload', data)
+        axios.post('http://localhost:3002/upload', data, this.state.config)
             .then((response) => {
                 console.log(response.data)
                 this.setState({
-                    image: response.data.filename
+                    product: { ...this.state.product, image: response.data.filename }
                 })
             }).catch((err) => console.log(err.response))
     }
 
+
+    updateProduct = (e) => {
+        e.preventDefault();
+        axios.put('http://localhost:3002/product/' + (this.props.match.params.id), {
+            ...this.state.product
+        }, this.state.config)
+            .then((response) => {
+                console.log(response.data)
+            }).catch((err) => console.log(err.response))
+
+        this.props.history.push('/product')
+
+    }
+
+
+
+    
     render() {
         return (
-            <div style={{ height: '130vh' }}>
-                <AuthenticNavigation></AuthenticNavigation>
+            <div>
+            <AuthenticNavigation></AuthenticNavigation>
 
-                <Container>
+            <Container>
                     <div className="clearfix">
                         <h2 className="float-left">Add Product </h2>
                         <Link to={`/product`} className="float-right mt-1">
@@ -94,17 +95,17 @@ export default class AddProduct extends Component {
                             <Form>
                                 <FormGroup>
                                     <Label for="product_name">Product name</Label>
-                                    <Input type="text" name="product_name" id="product_name" value={this.state.product_name} onChange={this.handleChange} />
+                                    <Input type="text" name="product_name" id="product_name" value={this.state.product.product_name} onChange={this.handleChange} />
                                 </FormGroup>
 
                                 <FormGroup>
                                     <Label for="product_details">Product details</Label>
-                                    <Input type="text" name="product_details" id="product_details" value={this.state.product_details} onChange={this.handleChange} />
+                                    <Input type="text" name="product_details" id="product_details" value={this.state.product.product_details} onChange={this.handleChange} />
                                 </FormGroup>
 
                                 <FormGroup>
                                     <Label for="price">Price</Label>
-                                    <Input type="number" name="price" id="price" value={this.state.price} onChange={this.handleChange} />
+                                    <Input type="number" name="price" id="price" value={this.state.product.price} onChange={this.handleChange} />
                                 </FormGroup>
 
 
@@ -114,7 +115,7 @@ export default class AddProduct extends Component {
                                     <Label for="image">Product image</Label>
                                     <FormGroup>
                                         <img className='img-thumbnail productImage'
-                                            width='400' src={`http://localhost:3002/uploads/${this.state.image}`}
+                                            width='400' src={`http://localhost:3002/uploads/${this.state.product.image}`}
                                         />
                                         <CustomInput type='file' id='image'
                                             onChange={this.handleFileSelect} />
@@ -124,7 +125,7 @@ export default class AddProduct extends Component {
                                 </FormGroup>
 
 
-                                <Button color='primary' block onClick={this.addproduct}>Add</Button>
+                                <Button color='primary' block onClick={this.updateProduct}>Update</Button>
 
 
                             </Form>
@@ -133,7 +134,9 @@ export default class AddProduct extends Component {
 
                 </Container>
 
-            </div >
+
+                
+            </div>
         )
     }
 }

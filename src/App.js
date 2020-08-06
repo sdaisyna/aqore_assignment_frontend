@@ -10,6 +10,7 @@ import Signup from './components/Signup';
 import Home from './components/Home';
 import Product from './components/Product';
 import AddProduct from './components/AddProduct';
+import EditProduct from './components/EditProduct';
 import Customer from './components/Customer';
 import AddCustomer from './components/AddCustomer';
 import EditCustomer from './components/EditCustomer';
@@ -27,6 +28,8 @@ function App() {
         <PrivateRoute exact path='/home' component={Home} />
         <PrivateRoute exact path='/product' component={Product} />
         <PrivateRoute exact path='/addproduct' component={AddProduct} />
+        <PrivateRoute exact path='/updateProduct/:id' component={EditProduct} />
+
         <PrivateRoute exact path='/customer' component={Customer} />
         <PrivateRoute exact path='/addcustomer' component={AddCustomer} />
         <PrivateRoute exact path='/updateCustomer/:id' component={EditCustomer} />
