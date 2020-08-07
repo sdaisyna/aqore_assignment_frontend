@@ -75,9 +75,9 @@ export default class AddTrasaction extends Component {
     }
 
     render() {
-        var curr = new Date();
-        curr.setDate(curr.getDate());
-        var date = curr.toISOString().substr(0, 10);
+        // var curr = new Date();
+        // curr.setDate(curr.getDate());
+        // var date = curr.toISOString().substr(0, 10);
 
 
 
@@ -87,7 +87,7 @@ export default class AddTrasaction extends Component {
 
                 <Container>
                     <div className="clearfix">
-                        <h2 className="float-left">Add Product </h2>
+                        <h2 className="float-left">Add Transaction </h2>
                         <Link to={`/transaction`} className="float-right mt-1">
                             <Button color="primary" > View transaction</Button>
                         </Link>

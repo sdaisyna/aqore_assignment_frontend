@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-import { Container, Table, Button } from 'reactstrap'
+import { Container, Table, Button, Modal, ModalBody, ModalHeader, ModalFooter, Label } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import AuthenticNavigation from './AuthenticNavigation'
 
@@ -11,10 +11,28 @@ export default class Transaction extends Component {
 
         this.state = {
             transactionId: '',
-            transaction: []
+            transaction: [],
+            transactionById: [],
+
+            modal: false
 
         }
+        this.toggle = this.toggle.bind(this);
+
+
+
     }
+
+    toggle() {
+        this.setState({
+            modal: !this.state.modal
+        })
+    }
+
+    handleSubmit = (e) => {
+        this.props.toggle();
+    }
+
 
     componentDidMount() {
         axios.get('http://localhost:3002/sales')
@@ -22,6 +40,15 @@ export default class Transaction extends Component {
                 console.log(response.data)
                 this.setState({
                     transaction: response.data
+                })
+            })
+            .catch((err) => console.log(err.response));
+
+        axios.get('http://localhost:3002/sales/' + (this.props.match.params.id))
+            .then((response) => {
+                console.log(response.data)
+                this.setState({
+                    transactionById: response.data
                 })
             })
             .catch((err) => console.log(err.response));
@@ -41,6 +68,9 @@ export default class Transaction extends Component {
     }
 
     render() {
+        var curr = new Date();
+        curr.setDate(curr.getDate());
+        var date = curr.toISOString().substr(0, 10);
         return (
             <div>
                 <AuthenticNavigation></AuthenticNavigation>
@@ -64,6 +94,7 @@ export default class Transaction extends Component {
                                         <th>Product</th>
                                         <th>Price</th>
                                         <th>Quantity</th>
+                                        <th>Total</th>
                                         <th>Edit</th>
                                         <th>Remove</th>
                                         <th>Generate</th>
@@ -79,6 +110,7 @@ export default class Transaction extends Component {
                                             <td>{transactions.product.product_name}</td>
                                             <td>{transactions.product.price}</td>
                                             <td>{transactions.quantity}</td>
+                                            <td>{transactions.product.price} * {transactions.quantity}</td>
                                             <td>
                                                 <Link to={`/updatetransaction/${transactions._id}`}>
                                                     <Button color="primary" >Update</Button>
@@ -88,8 +120,44 @@ export default class Transaction extends Component {
                                                 <Button color="danger" onClick={() => this.removeTransaction(transactions._id)}>Delete</Button>
                                             </td>
                                             <td>
-                                                <Link to={`/generateInvoice/${transactions._id}`}>
-                                                    <Button color="success" >Generate Invoice</Button>
+                                                <Link onClick={this.toggle}>
+                                                    <Button color="success" href={`${transactions._id}`} onClick={this.toggle}>Generate Invoice</Button>{' '}
+
+                                                    <Modal isOpen={this.state.modal}>
+                                                        <ModalHeader toggle={this.toggle}>Sales Transaction Invoice</ModalHeader>
+                                                        <ModalBody>
+
+                                                            <Label>Date : {date} </Label> <br></br>
+                                                            <Label>Name :  </Label>
+
+                                                            {/* <div>
+                                                                <Table>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>S.N</th>
+                                                                            <th>Product</th>
+                                                                            <th>Price</th>
+                                                                            <th>Quantity</th>
+                                                                            <th>Total</th>
+                                                                        </tr>
+                                                                    </thead>
+
+                                                                    <tbody>
+                                                                      {this.state.transactionById.map (transactionById => {
+                                                                          return (<tr>
+                                                                              <td>{transactionById.product.product_name}</td>
+                                                                              <td>{transactionById.product.price}</td>
+                                                                              </tr>)
+                                                                      })}
+                                                                        
+                                                                    </tbody>
+                                                                </Table>
+                                                            </div> */}
+                                                        </ModalBody>
+                                                        <ModalFooter>
+
+                                                        </ModalFooter>
+                                                    </Modal>
                                                 </Link>
                                             </td>
 
