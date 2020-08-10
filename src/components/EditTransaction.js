@@ -68,7 +68,7 @@ export default class EditTransaction extends Component {
 
                 <Container>
                     <div className="clearfix">
-                        <h2 className="float-left">Add Product </h2>
+                        <h2 className="float-left">Update Product </h2>
                         <Link to={`/transaction`} className="float-right mt-1">
                             <Button color="primary" > View transaction</Button>
                         </Link>
