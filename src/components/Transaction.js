@@ -12,14 +12,13 @@ export default class Transaction extends Component {
         this.state = {
             transactionId: '',
             transaction: [],
-            transactionById: [],
+            transactionById: {},
+            transId: [],
 
             modal: false
 
         }
         this.toggle = this.toggle.bind(this);
-
-
 
     }
 
@@ -37,18 +36,33 @@ export default class Transaction extends Component {
     componentDidMount() {
         axios.get('http://localhost:3002/sales')
             .then((response) => {
-                console.log(response.data)
+                console.log("Transcation", response.data)
                 this.setState({
                     transaction: response.data
                 })
             })
             .catch((err) => console.log(err.response));
 
-        axios.get('http://localhost:3002/sales/' + (this.props.match.params.id))
+        // axios.get('http://localhost:3002/sales/' + (this.props.match.params.id))
+        //     .then((response) => {
+        //         console.log(response.data)
+
+        //         this.setState({
+        //             transactionById: response.data,
+        //             modal: !this.state.modal
+        //         })
+        //     })
+        //     .catch((err) => console.log(err.response));
+    }
+
+    genTrans = (transId) => {
+        axios.get(`http://localhost:3002/sales/${transId}`)
             .then((response) => {
-                console.log(response.data)
+                console.log("Transcatin by ID", response.data)
+
                 this.setState({
-                    transactionById: response.data
+                    transactionById: response.data,
+                    modal: !this.state.modal
                 })
             })
             .catch((err) => console.log(err.response));
@@ -71,6 +85,11 @@ export default class Transaction extends Component {
         var curr = new Date();
         curr.setDate(curr.getDate());
         var date = curr.toISOString().substr(0, 10);
+
+        if (this.state.transactionById) {
+            const { customer, product } = this.state.transactionById;
+            console.log('customer', customer)
+        }
         return (
             <div>
                 <AuthenticNavigation></AuthenticNavigation>
@@ -83,7 +102,6 @@ export default class Transaction extends Component {
                         </Link>
 
                         <hr></hr>
-
 
                         <Container>
                             <Table hover>
@@ -110,7 +128,7 @@ export default class Transaction extends Component {
                                             <td>{transactions.product.product_name}</td>
                                             <td>{transactions.product.price}</td>
                                             <td>{transactions.quantity}</td>
-                                            <td>{transactions.product.price} * {transactions.quantity}</td>
+                                            <td>{transactions.product.price * transactions.quantity}</td>
                                             <td>
                                                 <Link to={`/updatetransaction/${transactions._id}`}>
                                                     <Button color="primary" >Update</Button>
@@ -120,17 +138,20 @@ export default class Transaction extends Component {
                                                 <Button color="danger" onClick={() => this.removeTransaction(transactions._id)}>Delete</Button>
                                             </td>
                                             <td>
-                                                <Link onClick={this.toggle}>
-                                                    <Button color="success" href={`${transactions._id}`} onClick={this.toggle}>Generate Invoice</Button>{' '}
-
+                                                <Link >
+                                                    <Button color="success" onClick={() => this.genTrans(transactions._id)}>Generate Invoice</Button>{' '}
                                                     <Modal isOpen={this.state.modal}>
                                                         <ModalHeader toggle={this.toggle}>Sales Transaction Invoice</ModalHeader>
                                                         <ModalBody>
 
-                                                            <Label>Date : {date} </Label> <br></br>
-                                                            <Label>Name :  </Label>
+                                                            <Label className="font-weight-bold">Date : </Label>
+                                                            <Label>{date}</Label>
+                                                            <br></br>
+                                                            <Label className="font-weight-bold">Name: </Label>
+                                                            <Label>{this.state.modal && this.state.transactionById.customer.fullname} </Label>
+                                                            <br></br>
 
-                                                            {/* <div>
+                                                            <div>
                                                                 <Table>
                                                                     <thead>
                                                                         <tr>
@@ -138,21 +159,24 @@ export default class Transaction extends Component {
                                                                             <th>Product</th>
                                                                             <th>Price</th>
                                                                             <th>Quantity</th>
-                                                                            <th>Total</th>
                                                                         </tr>
                                                                     </thead>
-
                                                                     <tbody>
-                                                                      {this.state.transactionById.map (transactionById => {
-                                                                          return (<tr>
-                                                                              <td>{transactionById.product.product_name}</td>
-                                                                              <td>{transactionById.product.price}</td>
-                                                                              </tr>)
-                                                                      })}
-                                                                        
+                                                                        <tr>
+                                                                            <td>1</td>
+                                                                            <td>{this.state.modal && this.state.transactionById.product.product_name}</td>
+                                                                            <td>{this.state.modal && this.state.transactionById.product.price}</td>
+                                                                            <td>{this.state.transactionById.quantity}</td>
+                                                                        </tr>
                                                                     </tbody>
                                                                 </Table>
-                                                            </div> */}
+
+                                                                <hr></hr>
+
+                                                                <div className="float-right mr-4">
+                                                                    <Label className="font-weight-bold">Total: Rs. {this.state.modal && this.state.transactionById.product.price * this.state.modal && this.state.transactionById.product.price}</Label>
+                                                                </div>
+                                                            </div>
                                                         </ModalBody>
                                                         <ModalFooter>
 

@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
+
+// Axios is a promise-based HTTP client which
+// makes easy to send asynchronous HTTP requests to REST 
+// endpoints anad perform CRUD operation
 import axios from 'axios'
-import { Container, Row, Col, Form, Input, FormGroup, Label, Button} from 'reactstrap'
+
+import { Container, Row, Col, Form, Input, FormGroup, Label, Button } from 'reactstrap'
 import { Link } from 'react-router-dom'
 
 import AuthenticNavigation from './AuthenticNavigation'
@@ -63,7 +68,7 @@ export default class AddCustomer extends Component {
                 <AuthenticNavigation></AuthenticNavigation>
 
                 <Container >
-                <div className="clearfix">
+                    <div className="clearfix">
                         <h2 className="float-left">Add Customer </h2>
                         <Link to={`/customer`} className="float-right mt-1">
                             <Button color="primary" > View customer</Button>
