@@ -173,6 +173,8 @@ export default class Transaction extends Component {
 
                                                                 <hr></hr>
 
+                                                                <Label>Daisyna</Label>
+
                                                                 <div className="float-right mr-4">
                                                                     <Label className="font-weight-bold">Total: Rs. {this.state.modal && this.state.transactionById.product.price * this.state.modal && this.state.transactionById.product.price}</Label>
                                                                 </div>
